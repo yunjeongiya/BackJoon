@@ -1,40 +1,24 @@
-#include<iostream>
-#include<cmath>
+#include <iostream>
+#include <cmath>
 using namespace std;
-
-unsigned long long input;
-
-long long sortcheck(unsigned long long x) {
-    if (pow(x, 2) >= input) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
+long long n;
+bool check(unsigned long long x) {
+    return pow(x,2) >= n;
 }
 
-int main() {
-    cin >> input;
-    unsigned long long low = 0;
-    unsigned long long hi = pow(2, 32);
-    unsigned long long mid;
-    while (true) {
-        mid = (low + hi) / 2;
-
-        if (low + 1 == hi) {
-            if (sortcheck(low) == sortcheck(hi)) {
-                cout << low;
-                return 0;
-            }
-            cout << hi;
-            return 0;
-        }
-
-        if (sortcheck(mid) == sortcheck(hi)) {
-            hi = mid;
-        }
-        else {
-            low = mid;
-        }
+int32_t main(void)
+{
+    std::ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    unsigned long long l, h, m;
+    cin >> n;
+    l = 0;
+    h = n;
+    while (l + 1 < h) {
+        m = (l + h) / 2;
+        if (check(l) == check(m)) l = m;
+        if (check(h) == check(m)) h = m;
     }
+    cout << h;
 }
