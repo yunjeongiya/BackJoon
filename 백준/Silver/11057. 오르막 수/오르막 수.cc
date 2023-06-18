@@ -3,9 +3,9 @@
 using namespace std;
 
 void dp(int* cnt) {
-    for (int i = 1; i < 10; i++) {
+    for (int i = 8; i >= 0; i--) {
         cnt[i] %= DIV;
-        cnt[i] += cnt[i-1];
+        cnt[i] += cnt[i+1];
     }
 }
 
@@ -17,7 +17,7 @@ void sol() {
 
     while(N--) dp(cnt);
 
-    cout << cnt[9] % DIV;
+    cout << cnt[0] % DIV;
 }
 
 int32_t main(void)
