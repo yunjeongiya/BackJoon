@@ -1,25 +1,23 @@
 #include <iostream>
 #define DIV 10007
 using namespace std;
-int N;
 
 void dp(int* cnt) {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 1; i < 10; i++) {
         cnt[i] %= DIV;
-        for (int j = i + 1; j < 10; j++) {
-            cnt[i] += cnt[j];
-        }
+        cnt[i] += cnt[i-1];
     }
 }
 
 void sol() {
+    int N;
     cin >> N;
     int cnt[10];
     fill_n(cnt, 10, 1);
 
     while(N--) dp(cnt);
 
-    cout << cnt[0] % DIV;
+    cout << cnt[9] % DIV;
 }
 
 int32_t main(void)
