@@ -27,16 +27,13 @@ void sol() {
         //h = min(h, lens[i]); // 범위 안좁혀도 큰 상관x
     }
 
-    if (check(h)) cout << h; // 처음부터 l부터 h까지 다 T인 경우
-    else {
-        while (l + 1 < h) {
-            m = ((long long)l + h) / 2; // h=2^31-1(INT_MAX) 면 l+h가 int 범위 초과
-            // cout << "l: " << l << "m: " << m << "h: " << h << endl;
-            if (check(l) == check(m)) l = m;
-            if (check(h) == check(m)) h = m;
-        }
-        cout << l;
+    while (l + 1 < h) {
+        m = ((long long)l + h) / 2; // h=2^31-1(INT_MAX) 면 l+h가 int 범위 초과
+        // cout << "l: " << l << "m: " << m << "h: " << h << endl;
+        if (check(l) == check(m)) l = m;
+        if (check(h) == check(m)) h = m;
     }
+    cout << l;
 }
 
 int32_t main(void)
