@@ -13,7 +13,7 @@ void sol() {
         cin >> meetings[i].first >> meetings[i].second;
 
     sort(meetings.begin(), meetings.end(),
-        [](pair<int, int> a, pair<int, int> b) {
+        [](pair<int, int>& a, pair<int, int>& b) {
             return a.second == b.second ?
                 a.first < b.first : a.second < b.second;
         });
