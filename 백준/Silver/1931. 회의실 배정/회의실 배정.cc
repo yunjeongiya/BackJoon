@@ -1,26 +1,27 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 using namespace std;
 
 void sol() {
-    int N, cnt = 0;
+    int N;
     cin >> N;
-    vector<vector<int>> meetings(N, vector<int>(2));
+    vector<pair<int, int>> meetings(N);
     
     for (int i = 0; i < N; i++)
-        cin >> meetings[i][0] >> meetings[i][1];
+        cin >> meetings[i].first >> meetings[i].second;
 
     sort(meetings.begin(), meetings.end(),
-        [](vector<int> a, vector<int> b) {
-            if (a[1] == b[1]) return a[0] < b[0];
-            return a[1] < b[1];
+        [](pair<int, int> a, pair<int, int> b) {
+            return a.second == b.second ?
+                a.first < b.first : a.second < b.second;
         });
 
-    int occupied_until = 0;
+    int occupied_until = 0, cnt = 0;
     for (auto meeting : meetings) {
-        if (meeting[0] < occupied_until) continue;
-        occupied_until = meeting[1];
+        if (meeting.first < occupied_until) continue;
+        occupied_until = meeting.second;
         cnt++;
     }
     cout << cnt;
