@@ -30,7 +30,6 @@ int32_t main(void)
     }
     sort(arr, arr + n);
 
-    i = 0;
     while (i < n) {
         if (arr[i] <= 0) {
             if (i + 1 < n && arr[i + 1] <= 0) {
