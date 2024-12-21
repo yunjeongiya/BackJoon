@@ -3,7 +3,8 @@ using namespace std;
 #define endl '\n'
 #define MAX 1000001
 
-pair<int, int> dist[MAX] = { {-1, 0}, {-1, 0}, };
+int dist[MAX] = { 0, 0, };
+int pre[MAX] = { -1, -1, };
 int main(void) {
 	cin.tie(0);
 	cout.tie(0);
@@ -11,13 +12,14 @@ int main(void) {
 	int N;
 	cin >> N;
 	for (int i = 2; i <= N; i++) {
-		dist[i] = { i - 1, dist[i - 1].second + 1 };
-		if (i % 2 == 0 && dist[i].second > dist[i / 2].second + 1) dist[i] = { i / 2, dist[i / 2].second + 1 };
-		if (i % 3 == 0 && dist[i].second > dist[i / 3].second + 1) dist[i] = { i / 3, dist[i / 3].second + 1 };
+		dist[i] = dist[i - 1] + 1;
+		pre[i] = i - 1;
+		if (i % 2 == 0 && dist[i] > dist[i / 2] + 1) { dist[i] = dist[i / 2] + 1; pre[i] = i / 2; }
+		if (i % 3 == 0 && dist[i] > dist[i / 3] + 1) { dist[i] = dist[i / 3] + 1; pre[i] = i / 3; }
 	}
-	cout << dist[N].second << endl;
+	cout << dist[N] << endl;
 	while (N != -1) {
 		cout << N << ' ';
-		N = dist[N].first;
+		N = pre[N];
 	}
 }
