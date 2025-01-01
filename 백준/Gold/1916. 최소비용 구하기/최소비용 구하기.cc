@@ -20,11 +20,11 @@ int main(void) {
 	int from, to;
 	cin >> from >> to;
 	dist[from] = 0;
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> PQ;
+	queue<pair<int, int>> PQ;
 	PQ.push({ 0, from });
 	while (!PQ.empty()) {
-		int curDist = PQ.top().first;
-		int curTo = PQ.top().second;
+		int curDist = PQ.front().first;
+		int curTo = PQ.front().second;
 		PQ.pop();
 		if (curDist > dist[curTo]) continue;
 		for (auto& bus : busesFrom[curTo]) {
