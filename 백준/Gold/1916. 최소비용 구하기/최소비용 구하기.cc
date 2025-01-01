@@ -3,7 +3,7 @@
 #include <queue>
 using namespace std;
 #define endl '\n';
-int main(void){
+int main(void) {
 	cin.tie(0);
 	cout.tie(0);
 	ios::sync_with_stdio(0);
@@ -20,7 +20,7 @@ int main(void){
 	int from, to;
 	cin >> from >> to;
 	dist[from] = 0;
-	priority_queue<pair<int, int>> PQ;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> PQ;
 	PQ.push({ 0, from });
 	while (!PQ.empty()) {
 		int curDist = PQ.top().first;
