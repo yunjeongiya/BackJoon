@@ -1,100 +1,71 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
 #include <unordered_map>
-
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
+#define endl '\n';
 
-const int INF = 1000000;
-int N, E;
-int s, e, c;
-priority_queue<pii> pq;
-vector<pii> adj[801];
-int u, v;
-int dist[801];
-bool visited[801];
-
-void reset() {
-	for (int i = 1; i <= N; i++)
-	{
-		dist[i] = INF;
-		visited[i] = false;
-	}
-}
-
-void dijkstra(int start) {
-	reset();
-	dist[start] = 0;
-	pq.push({ 0, start });
-	while (!pq.empty()) {
-		int now = pq.top().second;
-		int cost = -pq.top().first;
-		pq.pop();
-		if (visited[now])
-			continue;
-		visited[now] = true;
-		for (auto& p : adj[now]) {
-			int next = p.second;
-			int nextcost = p.first + cost;
-			if (nextcost < dist[next]) {
-				dist[next] = nextcost;
-				pq.push({ -nextcost, next });
-			}
+void dijkstra(int from, vector<int>& dist, vector<vector<pair<int, int>>>& G) {
+	dist[from] = 0;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> PQ;
+	PQ.push({ 0, from });
+	while (!PQ.empty()) {
+		int curCost = PQ.top().first;
+		int curVertex = PQ.top().second;
+		PQ.pop();
+		if (dist[curVertex] < curCost) continue;
+		for (auto& e : G[curVertex]) {
+			int newCost = e.second + curCost;
+			if (dist[e.first] != -1 && dist[e.first] <= newCost) continue;
+			dist[e.first] = newCost;
+			PQ.push({ newCost, e.first });
 		}
 	}
 }
 
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+int getDistOfPath(vector<pair<int, int>> path, unordered_map<int, vector<int>>& distVecMap) {
+	int sum = 0;
+	for (auto& part : path) {
+		int partDist = distVecMap[part.first][part.second];
+		if (partDist == -1) {
+			return -1;
+		}
+		sum += partDist;
+	}
+	return sum;
+}
 
+int main(void) {
+	cin.tie(0);
+	cout.tie(0);
+	ios::sync_with_stdio(0);
+
+	int N, E;
+	vector<vector<pair<int, int>>> G;
 	cin >> N >> E;
-	for (int i = 0; i < E; i++)
-	{
-		cin >> s >> e >> c;
-		adj[s].push_back({ c,e });
-		adj[e].push_back({ c,s });
-	}
-	cin >> u >> v;
+	G = vector<vector<pair<int, int>>>(N + 1);
 
-	dijkstra(1);
-	bool flag1 = false;
-	bool flag2 = false;
+	for (int i = 0; i < E; i++) {
+		int a, b, c;
+		cin >> a >> b >> c;
+		G[a].push_back({ b, c });
+		G[b].push_back({ a, c });
+	}
+	int v1, v2;
+	cin >> v1 >> v2;
+	unordered_map<int, vector<int>> distVecMap({
+		{1, vector<int>(N + 1, -1)},
+		{v1, vector<int>(N + 1, -1)},
+		{v2, vector<int>(N + 1, -1)},
+		});
 
-	int ans1 = dist[u];
-	int ans2 = dist[v];
-	if (dist[u] == INF)
-		flag1 = true;
-	if (dist[v] == INF)
-		flag2 = true;
-	dijkstra(u);
-	ans1 += dist[v];
-	ans2 += dist[N];
-	if (dist[v] == INF)
-		flag1 = true;
-	if (dist[N] == INF)
-		flag2 = true;
-	dijkstra(v);
-	ans1 += dist[N];
-	ans2 += dist[u];
-	if (dist[N] == INF)
-		flag1 = true;
-	if (dist[u] == INF)
-		flag2 = true;
-	if (flag1 && flag2) {
-		cout << -1;
-	}
-	else if (flag1) {
-		cout << ans2;
-	}
-	else if (flag2) {
-		cout << ans1;
-	}
-	else {
-		cout << min(ans1, ans2);
-	}
+	dijkstra(1, distVecMap[1], G);
+	dijkstra(v1, distVecMap[v1], G);
+	dijkstra(v2, distVecMap[v2], G);
+
+	int sol1 = getDistOfPath({ {1, v1}, {v1, v2}, {v2, N} }, distVecMap);
+	int sol2 = getDistOfPath({ {1, v2}, {v2, v1}, {v1, N} }, distVecMap);
+	if (sol1 == -1 && sol2 == -1) cout << -1;
+	else if (sol1 == -1 || sol2 < sol1) cout << sol2;
+	else cout << sol1;
 }
