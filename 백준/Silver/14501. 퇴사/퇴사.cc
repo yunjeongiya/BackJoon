@@ -1,9 +1,7 @@
 #include <iostream>
 using namespace std;
 #define endl '\n';
-#define MAX 15
-#include <stack>
-
+#define MAX 16
 
 int main(void) {
 	cin.tie(0);
@@ -15,18 +13,13 @@ int main(void) {
 	for (int i = 0; i < N; i++) {
 		cin >> T[i] >> P[i];
 	}
-	int ans = 0;
-	stack<pair<int, int>> s; //오늘 날짜, 여태까지 수익
-	s.push({ 0, 0 });
-	while (!s.empty()) {
-		int i = s.top().first;
-		int sum = s.top().second;
-		s.pop();
-		if (i == N && ans < sum) ans = sum;
-		if (i >= N) continue;
-		s.push({ i + T[i], sum + P[i] });
-		s.push({ i + 1, sum });
+	int earned[MAX] = { 0, };
+	for(int i = 0; i < N; i++) {
+		if (i + T[i] <= N && earned[i + T[i]] < earned[i] + P[i])
+			earned[i + T[i]] = earned[i] + P[i];
+		if (i + 1 <= N && earned[i + 1] < earned[i])
+			earned[i + 1] = earned[i];
 	}
 
-	cout << ans;
+	cout << earned[N];
 }
