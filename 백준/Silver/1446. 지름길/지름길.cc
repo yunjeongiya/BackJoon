@@ -24,7 +24,7 @@ int main(void) {
 		if (i != MAX) roadsFrom[i].push_back({ i + 1, 1 });
 	}
 
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+	priority_queue<pair<int, int>> pq;
 	pq.push({ 0, 0 });
 	while (!pq.empty()) {
 		int curMinDist = pq.top().first;
