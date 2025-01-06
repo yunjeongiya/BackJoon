@@ -18,11 +18,11 @@ int main(void) {
 		roadsFrom[start].push_back({ end, dist });
 	}
 
-	for (int i = 0; i < MAX; i++) {
-		dist[i] = i;
-		roadsFrom[i].push_back({ i + 1, 1 });
+	for (int i = 0; i <= MAX; i++) {
+		dist[i] = MAX;
+		if (i == 0) dist[i] = 0;
+		if (i != MAX) roadsFrom[i].push_back({ i + 1, 1 });
 	}
-	dist[MAX] = MAX;
 
 	cnt = MAX;
 	while (cnt--) {
