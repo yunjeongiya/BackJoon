@@ -6,7 +6,6 @@ using namespace std;
 #define MAX 10000
 
 int dist[MAX + 1];
-bool confirmed[MAX + 1] = { 0, };
 int main(void) {
 	int N, D;
 	cin >> N >> D;
@@ -31,12 +30,10 @@ int main(void) {
 		int curMinDist = pq.top().first;
 		int curMin = pq.top().second;
 		pq.pop();
-		if (confirmed[curMin]) continue;
-		confirmed[curMin] = true;
+		if (curMinDist > dist[curMin]) continue;
 
 		for (auto& road : roadsFrom[curMin]) {
-			if (confirmed[road.first]) continue;
-			if (dist[road.first] < curMinDist + road.second) continue;
+			if (dist[road.first] <= curMinDist + road.second) continue;
 			dist[road.first] = curMinDist + road.second;
 			pq.push({ dist[road.first], road.first });
 		}
