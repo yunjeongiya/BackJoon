@@ -24,13 +24,12 @@ int main(void) {
 		if (i != MAX) roadsFrom[i].push_back({ i + 1, 1 });
 	}
 
-	priority_queue<pair<int, int>> pq;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
 	pq.push({ 0, 0 });
 	while (!pq.empty()) {
 		int curMinDist = pq.top().first;
 		int curMin = pq.top().second;
 		pq.pop();
-		if (curMinDist > dist[curMin]) continue;
 
 		for (auto& road : roadsFrom[curMin]) {
 			if (dist[road.first] <= curMinDist + road.second) continue;
