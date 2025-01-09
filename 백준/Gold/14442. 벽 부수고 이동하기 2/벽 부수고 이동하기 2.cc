@@ -25,16 +25,24 @@ void go() {
 			int ny = dy[i] + y;
 			int nx = dx[i] + x;
 			if (ny < 0 || nx < 0 || ny >= n || nx >= m) continue;
-			if (visited[ny][nx] && macnt[ny][nx] <= cnt) continue; // 더 적게 부수고 갈 수 있을 때
-			if (cnt < k && a[ny][nx]) { //부술 기회 남았고 벽일 때
-					visited[ny][nx] = visited[y][x] + 1;
-					macnt[ny][nx] = cnt + 1;
-					q.push({ ny,nx, cnt + 1 });
+			if (visited[ny][nx] && macnt[ny][nx] <= cnt) {
+				if(visited[ny][nx] > visited[y][x] + 1) {
+					cout << "!!!";
+				}
+				continue;
 			}
-			if (a[ny][nx]) continue; // 부술 기회 없는데 벽일 때
-			visited[ny][nx] = visited[y][x] + 1; 
-			macnt[ny][nx] = cnt;
-			q.push({ ny,nx, cnt });
+			// 더 적게 부수고 갈 수 있을 때
+			// -> 무가중치고 큐기 때문에 먼저 저장되어 있던 거리가 무조건 더 작거나 같음
+			if (a[ny][nx]) { // 벽인데
+				if (cnt == k) continue; // 부술 기회 더 없을 때
+				visited[ny][nx] = visited[y][x] + 1;
+				macnt[ny][nx] = cnt + 1;
+				q.push({ ny,nx, cnt + 1 });
+			} else { // 벽 아닌데
+				visited[ny][nx] = visited[y][x] + 1; 
+				macnt[ny][nx] = cnt;
+				q.push({ ny,nx, cnt });
+			}
 		}
 	}
 }
