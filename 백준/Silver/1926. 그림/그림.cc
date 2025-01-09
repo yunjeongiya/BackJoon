@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-#include <stack>
+#include <queue>
 #include <vector>
 #define endl '\n'
 
@@ -31,12 +31,12 @@ int main(void) {
 			if (paper[i][j] == 0) continue;
 			cnt++;
 			int area = 0;
-			stack<pair<int, int>> q;
+			queue<pair<int, int>> q;
 			q.push({ i, j });
+            paper[i][j] = 0;
 			while (!q.empty()) {
-				int x = q.top().first;
-				int y = q.top().second;
-				paper[x][y] = 0;
+				int x = q.front().first;
+				int y = q.front().second;
 				q.pop();
 				area++;
 				//print(paper);
