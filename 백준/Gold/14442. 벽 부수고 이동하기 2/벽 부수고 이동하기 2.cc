@@ -5,7 +5,11 @@ using namespace std;
 #define endl '\n';
 
 typedef vector<vector<int>> Map;
-typedef pair<int, int> Coor;
+struct Data {
+    int broken;
+    int x;
+    int y;
+};
 
 int main(void) {
     cin.tie(0);
@@ -30,14 +34,13 @@ int main(void) {
     // 완전탐색 해가면서 찾아야 함 -> dfs로 해도 같은 결과 나오나?
     // 큐에 거리정보 저장해 둘 필요 x 의미 없음!
     // but 큐에 몇 번 부순 경로인 지는 같이 기록해야 함
-    queue<pair<int, Coor>> q;
-    q.push({ 0, {1, 1} });
+    queue<Data> q;
+    q.push({ 0, 1, 1 });
     distMaps[0][1][1] = 1;
     while (!q.empty()) {
-        int broken = q.front().first;
-        Coor coor = q.front().second;
-        int x = coor.first;
-        int y = coor.second;
+        int broken = q.front().broken;
+        int x = q.front().x;
+        int y = q.front().y;
         q.pop();
         const int dx[] = { 0, 0, 1, -1 };
         const int dy[] = { 1, -1, 0, 0 };
@@ -51,14 +54,14 @@ int main(void) {
                 int newDist = distMaps[broken][x][y] + 1;
                 if (oldDist != -1 && oldDist <= newDist) continue;
                 distMaps[broken + 1][nextX][nextY] = newDist;
-                q.push({ broken + 1, {nextX, nextY} });
+                q.push({ broken + 1, nextX, nextY });
             }
             else {
                 int oldDist = distMaps[broken][nextX][nextY];
                 int newDist = distMaps[broken][x][y] + 1;
                 if (oldDist != -1 && oldDist <= newDist) continue;
                 distMaps[broken][nextX][nextY] = newDist;
-                q.push({ broken, {nextX, nextY} });
+                q.push({ broken, nextX, nextY });
             }
         }
     }
