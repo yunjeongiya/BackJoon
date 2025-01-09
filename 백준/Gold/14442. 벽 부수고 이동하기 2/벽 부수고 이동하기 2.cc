@@ -25,14 +25,13 @@ void go() {
 			int ny = dy[i] + y;
 			int nx = dx[i] + x;
 			if (ny < 0 || nx < 0 || ny >= n || nx >= m) continue;
+			if (visited[ny][nx] && macnt[ny][nx] <= cnt) continue; // 더 적게 부수고 갈 수 있을 때
 			if (cnt < k && a[ny][nx]) { //부술 기회 남았고 벽일 때
-				if (visited[ny][nx] && macnt[ny][nx] <= cnt) continue;
 					visited[ny][nx] = visited[y][x] + 1;
 					macnt[ny][nx] = cnt + 1;
 					q.push({ ny,nx, cnt + 1 });
 			}
 			if (a[ny][nx]) continue; // 부술 기회 없는데 벽일 때
-			if (visited[ny][nx] && macnt[ny][nx] <= cnt) continue; // 더 적게 부수고 갈 수 있을 때
 			visited[ny][nx] = visited[y][x] + 1; 
 			macnt[ny][nx] = cnt;
 			q.push({ ny,nx, cnt });
