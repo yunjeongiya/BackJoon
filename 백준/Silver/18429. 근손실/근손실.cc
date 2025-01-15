@@ -1,37 +1,30 @@
 #include <iostream>
-#include <vector>
+#include <algorithm>
 using namespace std;
-int A[8];
-bool used[8] = { 0, };
-int cnt = 0;
-int N, K;
-int weight = 500;
-
-void func(int cur) {
-	if (cur == N) {
-		cnt++;
-		return;
-	}
-	for (int i = 0; i < N; i++) {
-		if (used[i]) continue;
-		int newWeight = weight - K + A[i];
-		if (newWeight < 500) continue;
-		used[i] = true;
-		int oldWeight = weight;
-		weight = newWeight;
-		func(cur + 1);
-		weight = oldWeight;
-		used[i] = false;
-	}
-}
 
 int main(void) {
+	int A[8], orders[8];
+	int cnt = 0;
+	int N, K;
+
 	cin >> N >> K;
 	for (int i = 0; i < N; i++) {
 		cin >> A[i];
+		orders[i] = i;
 	}
-	
-	func(0);
+
+	do {
+		//cout << endl;
+		int weight = 500;
+		int i = 0;
+		for (; i < N; i++) {
+			//cout << orders[i] << " ";
+			int newWeight = weight - K + A[orders[i]];
+			if (newWeight < 500) break;
+			weight = newWeight;
+		}
+		if (i == N) cnt++;
+	} while (next_permutation(orders, orders + N));
 
 	cout << cnt;
 }
