@@ -1,0 +1,14 @@
+SELECT 
+    g.SCORE,
+    e.EMP_NO,
+    e.EMP_NAME,
+    e.POSITION,
+    e.EMAIL
+FROM HR_EMPLOYEES as e
+    LEFT JOIN (
+        SELECT EMP_NO, SUM(SCORE) as SCORE
+        FROM HR_GRADE 
+        GROUP BY EMP_NO
+    ) as g ON e.EMP_NO = g.EMP_NO
+ORDER BY g.SCORE DESC
+LIMIT 1
