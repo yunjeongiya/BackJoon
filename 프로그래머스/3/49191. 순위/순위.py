@@ -1,21 +1,29 @@
+def dfs(i, graph, visited):
+    visited[i] = True
+    for connected in list(graph[i]):  # 복사본 순회
+        if not visited[connected]:
+            dfs(connected, graph, visited)
+        graph[i] |= graph[connected]  # 관계 확장
+
 def solution(n, results):
-    # 플로이드-워셜을 위한 그래프 초기화
-    graph = [[False]*(n+1) for _ in range(n+1)]
+    highers = [set() for _ in range(n+1)]
+    lowers = [set() for _ in range(n+1)]
+    
+    # 초기 경기 결과 입력
     for a, b in results:
-        graph[a][b] = True
+        highers[b].add(a)  # b를 이긴 선수 목록
+        lowers[a].add(b)   # a에게 진 선수 목록
     
-    # 전이적 폐쇄 계산
-    for k in range(1, n+1):
-        for i in range(1, n+1):
-            for j in range(1, n+1):
-                if graph[i][k] and graph[k][j]:
-                    graph[i][j] = True
-    
-    # 승패 집합 크기 확인
-    answer = 0
+    # 정방향 DFS: 간접적 승자 관계 확장
     for i in range(1, n+1):
-        wins = sum(graph[i][1:])
-        losses = sum(graph[j][i] for j in range(1, n+1))
-        if wins + losses == n-1:
-            answer += 1
-    return answer
+        visited = [False]*(n+1)
+        dfs(i, highers, visited)
+    
+    # 역방향 DFS: 간접적 패자 관계 확장
+    for i in range(1, n+1):
+        visited = [False]*(n+1)
+        dfs(i, lowers, visited)
+    
+    # 정확한 순위 판별
+    return sum(1 for i in range(1, n+1) 
+              if len(highers[i]) + len(lowers[i]) == n-1)
