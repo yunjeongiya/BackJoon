@@ -13,10 +13,10 @@ int solution(vector<vector<int> > maps)
 
     int n = maps.size();
     int m = maps[0].size();
-    vector<vector<bool>> visited(n, vector<bool>(m, false));
+    //vector<vector<bool>> visited(n, vector<bool>(m, false));
     queue<pair<int, int>> q;
     q.push({0, 0});
-    visited[0][0] = true;
+    //visited[0][0] = true;
     while(!q.empty()) {
         int x = q.front().first;
         int y = q.front().second;
@@ -26,11 +26,11 @@ int solution(vector<vector<int> > maps)
             int nextX = x + dx[i];
             int nextY = y + dy[i];
             if(nextX < 0 || n <= nextX || nextY < 0 || m <= nextY) continue;
-            if(maps[nextX][nextY] == 0 || visited[nextX][nextY]) continue;
-            maps[nextX][nextY] += maps[x][y];
+            if(maps[nextX][nextY] != 1) continue;
+            maps[nextX][nextY] = 1 + maps[x][y];
             if(nextX == n-1 && nextY == m-1) return maps[nextX][nextY];
         	q.push({nextX, nextY});
-            visited[nextX][nextY] = true;
+            //visited[nextX][nextY] = true;
         }
     }
     return -1;
