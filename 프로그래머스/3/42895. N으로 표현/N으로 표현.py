@@ -1,28 +1,14 @@
-from itertools import product
-
-max_size = 8
-
-def init_table(N):
-    return [0] + [set([int(str(N)*i)]) for i in range(1, max_size + 1)]
-
-def tabulate(table, i, j):
-    products = list(product(table[i], table[j]))
-    for p in products:
-        table[i+j].update([p[0] + p[1], p[0] - p[1], p[0] * p[1]])
-        if p[0] != 0:
-            table[i+j].add(int(p[1] / p[0]))
-        if p[1] != 0:
-            table[i+j].add(int(p[0] / p[1]))
-
-def combine(n, table):
-    for i in range(1, int(n/2) + 1):
-        tabulate(table, i, n-i)
-
 def solution(N, number):
-    table = init_table(N)
-    for i in range(1, max_size + 1):
-        combine(i, table)
-        if number in table[i]:
-            return i
-    print(table)
+    if N == number: return 1
+    
+    cases = {i: {int(str(N)*i)} for i in range(1,9)}
+    
+    for i in range(1,9):
+        for j in range(1, i):  # 수정된 부분 (i+1 → i)
+            for a in cases[j]:
+                for b in cases[i-j]:
+                    cases[i].update({a+b, a-b, a*b})
+                    if b !=0: cases[i].add(a//b)
+                    if a !=0: cases[i].add(b//a)
+        if number in cases[i]: return i
     return -1
